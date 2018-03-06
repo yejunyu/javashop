@@ -15,10 +15,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class TokenCache {
 
-    private static Logger logger = LoggerFactory.getLogger(TokenCache.class);
-
     public static final String TOKEN_PREFIX = "token_";
-
+    private static Logger logger = LoggerFactory.getLogger(TokenCache.class);
     // LRU算法,最少使用移除缓存项
     private static LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().initialCapacity(1000)
             .maximumSize(10000).expireAfterAccess(12, TimeUnit.HOURS)
@@ -30,15 +28,15 @@ public class TokenCache {
                 }
             });
 
-    public static void setKey(String key, String value){
+    public static void setKey(String key, String value) {
         loadingCache.put(key, value);
     }
 
-    public static String getKey(String key){
+    public static String getKey(String key) {
         String value = null;
         try {
             value = loadingCache.get(key);
-            if ("null".equals(value)){
+            if ("null".equals(value)) {
                 return null;
             }
             return value;

@@ -17,7 +17,7 @@ import java.util.UUID;
  * @date 18-3-6.
  */
 @Service("iUserService")
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -25,13 +25,13 @@ public class UserServiceImpl implements IUserService{
     @Override
     public ServerResponse<User> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);
-        if (resultCount == 0){
+        if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
 
         String md5Password = MD5Util.MD5EncodeUtf8(password);
         User user = userMapper.selectLogin(username, md5Password);
-        if (null == user){
+        if (null == user) {
             return ServerResponse.createByErrorMessage("密码错误");
         }
 
@@ -42,15 +42,15 @@ public class UserServiceImpl implements IUserService{
     @Override
     public ServerResponse<String> register(User user) {
         ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
-        if (!validResponse.isSuccess()){
+        if (!validResponse.isSuccess()) {
             return validResponse;
         }
         validResponse = this.checkValid(user.getEmail(), Const.EMAIL);
-        if (!validResponse.isSuccess()){
+        if (!validResponse.isSuccess()) {
             return validResponse;
         }
         validResponse = this.checkValid(user.getEmail(), Const.PHONE);
-        if (!validResponse.isSuccess()){
+        if (!validResponse.isSuccess()) {
             return validResponse;
         }
 
@@ -59,35 +59,35 @@ public class UserServiceImpl implements IUserService{
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         // 检查是否注册成功
         int resultCount = userMapper.insert(user);
-        if (resultCount == 0){
+        if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
         }
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
     @Override
-    public ServerResponse<String> checkValid(String str, String type){
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(type)){
+    public ServerResponse<String> checkValid(String str, String type) {
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(type)) {
             // 开始校验
-            if (Const.USERNAME.equals(type)){
+            if (Const.USERNAME.equals(type)) {
                 int resultCount = userMapper.checkUsername(str);
-                if (resultCount > 0){
+                if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("用户名已存在");
                 }
             }
-            if (Const.EMAIL.equals(type)){
+            if (Const.EMAIL.equals(type)) {
                 int resultCount = userMapper.checkEmail(str);
-                if (resultCount > 0){
+                if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("Email已存在");
                 }
             }
-            if (Const.PHONE.equals(type)){
+            if (Const.PHONE.equals(type)) {
                 int resultCount = userMapper.checkPhone(str);
-                if (resultCount > 0){
+                if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("手机号已存在");
                 }
             }
-        }else {
+        } else {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         return ServerResponse.createBySuccessMessage("校验成功");
@@ -96,11 +96,11 @@ public class UserServiceImpl implements IUserService{
     @Override
     public ServerResponse<String> selectQuestion(String username) {
         ServerResponse validResponse = this.checkValid(username, Const.USERNAME);
-        if (validResponse.isSuccess()){
+        if (validResponse.isSuccess()) {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
         String question = userMapper.selectQuestionByUsername(username);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(question)){
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(question)) {
             return ServerResponse.createBySuccess(question);
         }
         return ServerResponse.createByErrorMessage("找回密码的问题为空");
@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService{
     @Override
     public ServerResponse<String> checkAnswer(String username, String question, String answer) {
         int resultCount = userMapper.checkAnswer(username, question, answer);
-        if (resultCount > 0 ){
+        if (resultCount > 0) {
             // 说明问题回答正确，返回一个随机uuid当做token
             String forgetToken = UUID.randomUUID().toString();
             TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
@@ -120,21 +120,21 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken) {
-        if (org.apache.commons.lang3.StringUtils.isBlank(forgetToken)){
+        if (org.apache.commons.lang3.StringUtils.isBlank(forgetToken)) {
             return ServerResponse.createByErrorMessage("参数错误,token需要传递");
         }
         ServerResponse validResponse = this.checkValid(username, Const.USERNAME);
-        if (validResponse.isSuccess()){
+        if (validResponse.isSuccess()) {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
         String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
-        if (org.apache.commons.lang3.StringUtils.isBlank(token)){
+        if (org.apache.commons.lang3.StringUtils.isBlank(token)) {
             return ServerResponse.createByErrorMessage("token无效或已过期");
         }
-        if (org.apache.commons.lang3.StringUtils.equals(forgetToken, token)){
+        if (org.apache.commons.lang3.StringUtils.equals(forgetToken, token)) {
             String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
             int rowCount = userMapper.updatePasswordByUsername(username, md5Password);
-            if (rowCount > 0){
+            if (rowCount > 0) {
                 return ServerResponse.createBySuccessMessage("修改密码成功");
             }
 
@@ -148,13 +148,13 @@ public class UserServiceImpl implements IUserService{
     public ServerResponse<String> resetPassword(String passwordOld, String passwordNew, User user) {
         // 防止横向越权
         int resultCount = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld), user.getId());
-        if (resultCount == 0){
+        if (resultCount == 0) {
             return ServerResponse.createBySuccessMessage("密码错误");
         }
 
         user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
         int updateCount = userMapper.updateByPrimaryKeySelective(user);
-        if (updateCount > 0){
+        if (updateCount > 0) {
             return ServerResponse.createBySuccessMessage("密码更新成功");
         }
         return ServerResponse.createByErrorMessage("密码更新失败");
@@ -165,7 +165,7 @@ public class UserServiceImpl implements IUserService{
         // username 是不能被更新的
         // email也要校验,同样的email不能更新(email已被注册过了)
         int resultCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
-        if (resultCount > 0 ){
+        if (resultCount > 0) {
             return ServerResponse.createByErrorMessage("email已经存在，请换一个email");
         }
         User updateUser = new User();
