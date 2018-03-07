@@ -37,9 +37,9 @@ public class UserManageController {
         ServerResponse<User> response = iUserService.login(username, password);
         if (response.isSuccess()) {
             User user = response.getData();
-            if (user.getRole() == Const.Role.ROLE_ADMIN){
+            if (user.getRole() == Const.Role.ROLE_ADMIN) {
                 session.setAttribute(Const.CURRENT_USER, response.getData());
-            }else {
+            } else {
                 return ServerResponse.createByErrorMessage("不是管理员,无法登陆");
             }
         }

@@ -24,6 +24,7 @@ public class FTPUtil {
     private String user;
     private String pwd;
     private FTPClient ftpClient;
+
     public FTPUtil(String ip, int port, String user, String pwd) {
         this.ip = ip;
         this.port = port;

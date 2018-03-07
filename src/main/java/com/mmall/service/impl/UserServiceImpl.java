@@ -49,7 +49,7 @@ public class UserServiceImpl implements IUserService {
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
-        validResponse = this.checkValid(user.getEmail(), Const.PHONE);
+        validResponse = this.checkValid(user.getPhone(), Const.PHONE);
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
@@ -176,20 +176,34 @@ public class UserServiceImpl implements IUserService {
         updateUser.setAnswer(user.getAnswer());
 
         int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
-        if (updateCount > 0){
+        if (updateCount > 0) {
             return ServerResponse.createBySuccess("更新个人信息成功", updateUser);
         }
         return ServerResponse.createByErrorMessage("更新个人信息失败");
     }
 
     @Override
-    public ServerResponse<User> getInformation(Integer userId){
+    public ServerResponse<User> getInformation(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
-        if(user == null){
+        if (user == null) {
             return ServerResponse.createByErrorMessage("找不到当前用户");
         }
         user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
+    }
 
+    // backend
+
+    /**
+     * 校验是否是管理员
+     *
+     * @param user
+     * @return
+     */
+    public ServerResponse checkAdminRole(User user) {
+        if (user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN) {
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 }
