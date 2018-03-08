@@ -1,14 +1,21 @@
 package com.mmall.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
+import com.mmall.dao.CategoryMapper;
 import com.mmall.dao.ProductMapper;
+import com.mmall.pojo.Category;
 import com.mmall.pojo.Product;
 import com.mmall.service.IProductService;
+import com.mmall.util.DateTimeUtil;
+import com.mmall.util.PropertiesUtil;
 import com.mmall.vo.ProductDetailVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author yejunyu
@@ -19,6 +26,9 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public ServerResponse saveAndUpdateProduct(Product product) {
@@ -66,7 +76,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ServerResponse<Object> manageProductDetail(Integer productId) {
+    public ServerResponse<ProductDetailVo> manageProductDetail(Integer productId) {
         if (null == productId) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -74,8 +84,13 @@ public class ProductServiceImpl implements IProductService {
         if (null == product) {
             return ServerResponse.createByErrorMessage("产品已下架");
         }
+        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        return ServerResponse.createBySuccess(productDetailVo);
+    }
+
+    private ProductDetailVo assembleProductDetailVo(Product product) {
         ProductDetailVo productDetailVo = new ProductDetailVo();
-        productDetailVo.setId(productId);
+        productDetailVo.setId(product.getId());
         productDetailVo.setCategoryId(product.getCategoryId());
         productDetailVo.setName(product.getName());
         productDetailVo.setSubtitle(product.getSubtitle());
@@ -85,8 +100,26 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
         productDetailVo.setStatus(product.getStatus());
 
-        return ServerResponse.createByErrorMessage("修改产品销售状态失败");
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
+
+        Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
+        if (null == category) {
+            // 根节点
+            productDetailVo.setParentCategoryId(0);
+        } else {
+            productDetailVo.setParentCategoryId(category.getParentId());
+        }
+        productDetailVo.setCreateTime(DateTimeUtil.dateToStr(product.getCreateTime()));
+        productDetailVo.setUpdateTime(DateTimeUtil.dateToStr(product.getUpdateTime()));
+        return productDetailVo;
     }
 
-    private
+    public ServerResponse getProductList(int pageNum, int pageSize) {
+        // startPage -> start
+        // 填充自己的 sql 查询
+        // pageHelper 收尾
+        PageHelper.startPage(pageNum, pageSize);
+        List<Product> productList = productMapper.selectList();
+
+    }
 }
