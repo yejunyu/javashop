@@ -55,4 +55,9 @@ public class Const {
         int ROLE_CUSTOMER = 1; // 普通用户
         int ROLE_ADMIN = 0; // 管理员
     }
+
+    public interface Cart {
+        int CHECKED = 1; // 购物车选中状态
+        int UN_CHECKED = 0; // 购物车未选中状态
+    }
 }
