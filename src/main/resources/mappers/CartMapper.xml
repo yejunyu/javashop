@@ -132,7 +132,7 @@
         WHERE user_id = #{userId}
     </select>
 
-    <select id="selectCartProductCheckedStatusByUserId" resultType="int" parameterType="int">
+    <select id="selectCartProductCheckedStatusByUserId" resultType="java.lang.Integer" parameterType="int">
         SELECT COUNT(1)
         FROM mmall.mmall_cart
         WHERE checked = 0
@@ -152,11 +152,17 @@
 
     <update id="checkedOrUnCheckedProduct" parameterType="map">
         UPDATE mmall.mmall_cart
-        SET checked = #{checked}
-        update_time = now(),
+        SET checked = #{checked},
+        update_time = now()
         WHERE user_id = #{userId}
         <if test="productId != null">
             AND product_id = #{productId}
         </if>
     </update>
+
+    <select id="selectCountProductCount" resultType="java.lang.Integer" parameterType="int">
+        SELECT IFNULL(SUM(quantity),0) as count
+        FROM mmall_cart
+        WHERE user_id = #{userId}
+    </select>
 </mapper>
