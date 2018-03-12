@@ -46,6 +46,29 @@ public class Const {
         }
     }
 
+    public enum PayPlatformEnum {
+        ALIPAY(1, "支付宝");
+        int code;
+        String value;
+
+        PayPlatformEnum(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public enum PaymentTypeEnum {
+
+    }
+
     public interface ProductListOrderBy {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc", "price_asc");
     }
@@ -63,4 +86,5 @@ public class Const {
         String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
         String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
     }
+
 }
