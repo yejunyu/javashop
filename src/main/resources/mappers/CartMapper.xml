@@ -136,7 +136,7 @@
         SELECT COUNT(1)
         FROM mmall.mmall_cart
         WHERE checked = 0
-        AND  user_id = #{userId}
+        AND user_id = #{userId}
     </select>
 
     <delete id="deleteByUserIdAndProductIdList" parameterType="map">

@@ -18,16 +18,16 @@ import java.util.Map;
  * @date 18-3-12.
  */
 @Service("iShippingService")
-public class ShippingServiceImpl implements IShippingService{
+public class ShippingServiceImpl implements IShippingService {
 
     @Autowired
     private ShippingMapper shippingMapper;
 
     @Override
-    public ServerResponse add(Integer userId, Shipping shipping){
+    public ServerResponse add(Integer userId, Shipping shipping) {
         shipping.setUserId(userId);
         int rowCount = shippingMapper.insert(shipping);
-        if (rowCount > 0){
+        if (rowCount > 0) {
             Map resultMap = Maps.newHashMap();
             resultMap.put("shippingId", shipping.getId());
             return ServerResponse.createBySuccess("新建地址成功", resultMap);
@@ -38,7 +38,7 @@ public class ShippingServiceImpl implements IShippingService{
     @Override
     public ServerResponse delete(Integer userId, Integer shippingId) {
         int resultCount = shippingMapper.deleteByShippingIdAndUserId(userId, shippingId);
-        if (resultCount > 0){
+        if (resultCount > 0) {
             return ServerResponse.createBySuccessMessage("删除地址成功");
         }
         return ServerResponse.createByErrorMessage("删除地址失败");
@@ -48,7 +48,7 @@ public class ShippingServiceImpl implements IShippingService{
     public ServerResponse update(Integer userId, Shipping shipping) {
         shipping.setUserId(userId);
         int rowCount = shippingMapper.updateByShipping(shipping);
-        if (rowCount > 0){
+        if (rowCount > 0) {
             return ServerResponse.createBySuccessMessage("更新地址成功");
         }
         return ServerResponse.createByErrorMessage("更新地址失败");
@@ -56,8 +56,8 @@ public class ShippingServiceImpl implements IShippingService{
 
     @Override
     public ServerResponse select(Integer userId, Integer shippingId) {
-        Shipping shipping = shippingMapper.selectByShippingAndUserId(userId,shippingId);
-        if (null == shippingId){
+        Shipping shipping = shippingMapper.selectByShippingAndUserId(userId, shippingId);
+        if (null == shippingId) {
             return ServerResponse.createByErrorMessage("无法查询该地址");
         }
         return ServerResponse.createBySuccess(shipping);

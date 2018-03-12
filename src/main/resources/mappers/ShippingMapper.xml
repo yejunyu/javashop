@@ -176,13 +176,13 @@
         update_time = now()
         where id = #{id,jdbcType=INTEGER}
     </update>
-    
+
     <delete id="deleteByShippingIdAndUserId">
         DELETE FROM mmall.mmall_shipping
         WHERE id = #{shippingId}
         AND user_id = #{userId}
     </delete>
-    
+
     <update id="updateByShipping" parameterType="com.mmall.pojo.Shipping">
         update mmall_shipping
         set
@@ -201,7 +201,7 @@
 
     <select id="selectByShippingAndUserId" resultMap="BaseResultMap" parameterType="map">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM mmall.mmall_shipping
         WHERE id = #{shippingId}
         AND user_id = #{userId}
@@ -209,7 +209,7 @@
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="int">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM mmall.mmall_shipping
         WHERE user_id = #{userId}
     </select>
