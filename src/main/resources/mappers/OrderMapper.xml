@@ -201,7 +201,7 @@
 
     <select id="selectByUserIdAndOrderNo" resultMap="BaseResultMap" parameterType="map">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM mmall_order
         WHERE order_no = #{orderNo}
         AND user_id = #{userId}

@@ -8,7 +8,7 @@ import com.mmall.common.ServerResponse;
  */
 public interface IOrderService {
 
-    ServerResponse pay(Long orderNo,Integer userId, String path);
+    ServerResponse pay(Long orderNo, Integer userId, String path);
 
     ServerResponse createOrder(Integer userId, Integer shippingId);
 }

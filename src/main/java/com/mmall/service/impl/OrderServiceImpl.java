@@ -144,7 +144,7 @@ public class OrderServiceImpl implements IOrderService {
                 dumpResponse(response);
 
                 File folder = new File(path);
-                if (!folder.exists()){
+                if (!folder.exists()) {
                     folder.setWritable(true);
                     folder.mkdirs();
                 }
@@ -153,15 +153,15 @@ public class OrderServiceImpl implements IOrderService {
                 String qrPath = String.format(path + "/qr-%s.png", response.getOutTradeNo());
                 String qrFileName = String.format("qr-%s.png", response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, qrPath);
-                File targetFile = new File(path,qrFileName);
+                File targetFile = new File(path, qrFileName);
                 try {
                     FTPUtil.uploadFile(Lists.<File>newArrayList(targetFile));
                 } catch (IOException e) {
-                    logger.error("上传二维码异常",e);
+                    logger.error("上传二维码异常", e);
                 }
-                logger.info("qrPath"+qrPath);
-                String qrUrl = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName();
-                resultMap.put("qrUrl",qrUrl);
+                logger.info("qrPath" + qrPath);
+                String qrUrl = PropertiesUtil.getProperty("ftp.server.http.prefix") + targetFile.getName();
+                resultMap.put("qrUrl", qrUrl);
                 return ServerResponse.createBySuccess(resultMap);
             case FAILED:
                 return ServerResponse.createByErrorMessage("支付宝预下单失败!!!");
