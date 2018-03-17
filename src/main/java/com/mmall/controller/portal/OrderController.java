@@ -1,11 +1,15 @@
 package com.mmall.controller.portal;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.demo.trade.config.Configs;
 import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.IOrderService;
+import com.mmall.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +71,17 @@ public class OrderController {
         }
         logger.info("支付宝回调,sign:{},trade_status:{},参数:{}",params.get("sign"),params.get("trade_status"),params.toString());
         // 必须要验证回调的正确性,还要避免重复通知
-
+        params.remove("sign_type");
+        try {
+            boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(params, Configs.getAlipayPublicKey(),"utf-8",Configs.getSignType());
+            // todo 验证各种参数
+            if (!alipayRSACheckedV2){
+                return ServerResponse.createByErrorMessage("非法请求,验证不通过");
+            }
+        } catch (AlipayApiException e) {
+            logger.error("支付宝回调异常",e);
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping("create.do")
