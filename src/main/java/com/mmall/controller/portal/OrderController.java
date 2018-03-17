@@ -1,5 +1,6 @@
 package com.mmall.controller.portal;
 
+import com.google.common.collect.Maps;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -31,7 +32,7 @@ public class OrderController {
     private IOrderService iOrderService;
 
     /**
-     * 二维码支付
+     * 扫码支付
      *
      * @param session
      * @param orderNo
@@ -52,13 +53,21 @@ public class OrderController {
     @RequestMapping("alipay_callback.do")
     @ResponseBody
     public Object alipayCallback(HttpServletRequest request) {
+        Map<String,String> params = Maps.newHashMap();
+
         Map resultParams = request.getParameterMap();
         for (Iterator iterator = resultParams.keySet().iterator(); iterator.hasNext(); ) {
             String name = (String) iterator.next();
             String[] values = (String[]) resultParams.get(name);
             String valueStr = "";
-
+            for (int i=0; i<values.length;i++){
+                valueStr = (i == values.length -1)?valueStr+values[i]:valueStr+values[i]+",";
+            }
+            params.put(name,valueStr);
         }
+        logger.info("支付宝回调,sign:{},trade_status:{},参数:{}",params.get("sign"),params.get("trade_status"),params.toString());
+        // 必须要验证回调的正确性,还要避免重复通知
+
     }
 
     @RequestMapping("create.do")
