@@ -37,7 +37,7 @@ public class OrderManageController {
         }
         if (iUserService.checkAdminRole(user).isSuccess()) {
             // 获取商品list
-            return iProductService.getProductList(pageNum, pageSize);
+            return null;
         } else {
             return ServerResponse.createByErrorMessage("无权操作，需要管理员权限");
         }
