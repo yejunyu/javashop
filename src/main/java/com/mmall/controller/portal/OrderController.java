@@ -89,7 +89,7 @@ public class OrderController {
     }
 
     // 前台查看支付状态
-    @RequestMapping("pay.do")
+    @RequestMapping("query_order_status.do")
     @ResponseBody
     public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
