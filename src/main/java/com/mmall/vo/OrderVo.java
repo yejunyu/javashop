@@ -8,6 +8,7 @@ import java.util.List;
  * @date 2018/3/18.
  */
 public class OrderVo {
+
     private Long orderNo;
 
     private BigDecimal payment;
@@ -35,8 +36,11 @@ public class OrderVo {
     private List<OrderItemVo> orderItemVoList;
 
     private String imageHost;
+
     private Integer shippingId;
+
     private String receiveName;
+
     private ShippingVo shippingVo;
 
     public Long getOrderNo() {
