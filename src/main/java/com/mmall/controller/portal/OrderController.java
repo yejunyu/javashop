@@ -110,6 +110,6 @@ public class OrderController {
         if (null == user) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
-        return null;
+        return iOrderService.createOrder(user.getId(), shippingId);
     }
 }
