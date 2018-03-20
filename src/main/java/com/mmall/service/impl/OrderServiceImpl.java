@@ -236,7 +236,7 @@ public class OrderServiceImpl implements IOrderService {
         // 计算订单总价
         ServerResponse serverResponse = this.getCartOrderItem(userId, cartList);
         if (!serverResponse.isSuccess()) {
-            return ServerResponse.createByError();
+            return ServerResponse.createByErrorMessage("订单内的产品有误");
         }
         List<OrderItem> orderItemList = (List<OrderItem>) serverResponse.getData();
         BigDecimal payment = this.getOrderTotalPrice(orderItemList);
@@ -531,6 +531,7 @@ public class OrderServiceImpl implements IOrderService {
                 orderMapper.updateByPrimaryKeySelective(order);
                 return ServerResponse.createBySuccessMessage("发货成功!");
             }
+            return ServerResponse.createByErrorMessage("已发货,请不要重复提交");
         }
         return ServerResponse.createByErrorMessage("订单不存在");
     }

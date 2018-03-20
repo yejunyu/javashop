@@ -390,7 +390,7 @@ INSERT INTO `mmall_product` VALUES (26, 100002, 'Apple iPhone 7 Plus (A1661) 128
        '173335a4-5dce-4afd-9f18-a10623724c4e.jpeg,42b1b8bc-27c7-4ee1-80ab-753d216a1d49.jpeg,2f1b3de1-1eb1-4c18-8ca2-518934931bec.jpeg',
        '<p><img alt=\"1TB2WLZrcIaK.eBjSspjXXXL.XXa_!!2114960396.jpg\" src=\"http://img.happymmall.com/ffcce953-81bd-463c-acd1-d690b263d6df.jpg\" width=\"790\" height=\"920\"><img alt=\"2TB2zhOFbZCO.eBjSZFzXXaRiVXa_!!2114960396.jpg\" src=\"http://img.happymmall.com/58a7bd25-c3e7-4248-9dba-158ef2a90e70.jpg\" width=\"790\" height=\"1052\"><img alt=\"3TB27mCtb7WM.eBjSZFhXXbdWpXa_!!2114960396.jpg\" src=\"http://img.happymmall.com/2edbe9b3-28be-4a8b-a9c3-82e40703f22f.jpg\" width=\"790\" height=\"820\"><br></p>',
        4299.00, 9993, 1, '2017-04-13 19:07:47', '2017-04-13 21:45:41'),
-  (30, 100002, 'iphoneX', 'xxxxxxxxxxxxxx', '1.jpg', '1.jpg,2.png', '好贵', 9999.99, 2, 4, '2018-03-08 18:16:59',
+  (30, 100002, 'iphoneX', 'xxxxxxxxxxxxxx', '1.jpg', '1.jpg,2.png', '好贵', 9999.99, 2, 1, '2018-03-08 18:16:59',
    '2018-03-08 18:16:59');
 /*!40000 ALTER TABLE `mmall_product`
   ENABLE KEYS */;
@@ -428,7 +428,7 @@ CREATE TABLE `mmall_shipping` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 30
+  AUTO_INCREMENT = 31
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -445,6 +445,8 @@ INSERT INTO `mmall_shipping` VALUES
   (7, 17, 'Rosen', '13800138000', '13800138000', '北京', '北京', NULL, '中关村', '100000', '2017-03-29 12:11:01',
    '2017-03-29 12:11:01'),
   (29, 1, '吉利', '13800138000', '13800138000', '北京', '北京', '海淀区', '海淀区中关村', '100000', '2017-04-09 18:33:32',
+   '2017-04-09 18:33:32'),
+  (30, 22, 'yy', '13800138000', '13800138000', '北京', '北京', '海淀区', '海淀区中关村', '100000', '2017-04-09 18:33:32',
    '2017-04-09 18:33:32');
 /*!40000 ALTER TABLE `mmall_shipping`
   ENABLE KEYS */;
@@ -515,4 +517,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-09 18:29:03
+-- Dump completed on 2018-03-20 17:04:20

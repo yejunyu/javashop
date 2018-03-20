@@ -136,6 +136,8 @@ public class Const {
 
     public interface ProductListOrderBy {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc", "price_asc");
+        Set<String> CREATE_TIME_ASC_DESC = Sets.newHashSet("create_time_desc", "create_time_asc");
+        Set<String> UPDATE_TIME_ASC_DESC = Sets.newHashSet("update_time_desc", "update_time_asc");
     }
 
     // 不用枚举，枚举太麻烦，用一个接口来实现选择
