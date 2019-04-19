@@ -471,7 +471,7 @@ public class OrderServiceImpl implements IOrderService {
     private List<OrderVo> assembleOrderVoList(List<Order> orderList, Integer userId) {
         List<OrderVo> orderVoList = Lists.newArrayList();
         for (Order order : orderList) {
-            List<OrderItem> orderItemList = Lists.newArrayList();
+            List<OrderItem> orderItemList;
             if (null == userId) {
                 orderItemList = orderItemMapper.selectByOrderNo(order.getOrderNo());
             } else {
