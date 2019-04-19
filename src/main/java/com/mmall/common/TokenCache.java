@@ -23,7 +23,7 @@ public class TokenCache {
             .build(new CacheLoader<String, String>() {
                 @Override
                 // 默认数据加载实现,当调用get时，key不存在则调用这个方法进行加载
-                public String load(String s) throws Exception {
+                public String load(String s) {
                     return "null";
                 }
             });
@@ -33,7 +33,7 @@ public class TokenCache {
     }
 
     public static String getKey(String key) {
-        String value = null;
+        String value;
         try {
             value = loadingCache.get(key);
             if ("null".equals(value)) {
