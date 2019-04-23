@@ -64,7 +64,7 @@ public class CartServiceImpl implements ICartService {
         List<Cart> cartList = cartMapper.selectCartByUserId(userId);
         List<CartProductVo> cartProductVoList = Lists.newArrayList();
 
-        BigDecimal cartTotalPrice = new BigDecimal("0");
+        BigDecimal cartTotalPrice = BigDecimal.ZERO;
         if (CollectionUtils.isNotEmpty(cartList)) {
             for (Cart cartItem : cartList) {
                 CartProductVo cartProductVo = new CartProductVo();
